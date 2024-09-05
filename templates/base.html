@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Hairdresser App{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
+
+    {% load static %}
+
+    <!-- Подключение Bootstrap и вашего файла стилей -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
     <!-- Навигационная панель -->
@@ -18,15 +21,36 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
+                    {% if user.client %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'client_profile' %}">Client Profile</a> <!-- Ссылка на профиль клиента -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'client_dashboard' %}">Client Dashboard</a>
+                        </li>
+                    {% elif user.hairdresser %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hairdresser_profile' %}">Hairdresser Profile</a> <!-- Ссылка на профиль парикмахера -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'hairdresser_dashboard' %}">Hairdresser Dashboard</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'client_dashboard' %}">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        <!-- Форма для выхода -->
+                        <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <!-- Ссылка на вход для парикмахера -->
+                        <a class="nav-link" href="{% url 'login' %}?next=/hairdressers/dashboard/">Login Hairdresser</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Ссылка на вход для клиента -->
+                        <a class="nav-link" href="{% url 'login' %}?next=/clients/dashboard/">Login Client</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
@@ -36,35 +60,13 @@
         </div>
     </nav>
 
-    <!-- Контейнеры с кнопками -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6 text-center">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Are you a Hairdresser?</h5>
-                        <p class="card-text">Register or log in to manage your appointments and clients.</p>
-                        <a href="{% url 'register_hairdresser' %}" class="btn btn-primary">Hairdresser Registration</a>
-                        <a href="{% url 'login' %}?next=/hairdressers/dashboard/" class="btn btn-secondary">Hairdresser Login</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 text-center">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Are you a Client?</h5>
-                        <p class="card-text">Register or log in to book appointments with your favorite hairdresser.</p>
-                        <a href="{% url 'register' %}" class="btn btn-primary">Client Registration</a>
-                        <a href="{% url 'login' %}?next=/clients/dashboard/" class="btn btn-secondary">Client Login</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Контент страницы -->
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

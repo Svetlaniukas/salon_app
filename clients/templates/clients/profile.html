@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Client Profile{% endblock %}
+
+{% load static %} <!-- Загрузка библиотеки static -->
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>{{ client.name }}'s Profile</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            {% if client.avatar %}
+                                <img src="{{ client.avatar.url }}" class="img-fluid rounded-circle avatar" alt="Client Avatar">
+                            {% else %}
+                                <img src="{% static 'images/default-avatar.png' %}" class="img-fluid rounded-circle avatar" alt="Default Avatar">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" value="{{ client.name }}" name="name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" value="{{ client.user.email }}" name="email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" id="phone" value="{{ client.phone }}" name="phone">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="avatar" class="form-label">Update Avatar</label>
+                                    <input type="file" class="form-control" id="avatar" name="avatar">
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

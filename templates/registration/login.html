@@ -1,16 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Login</h2>
+
+                    <!-- Проверка ошибок формы -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>There was an error with your submission:</strong>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </div>
+                    </form>
+
+                    <!-- Ссылка для восстановления пароля -->
+                    <div class="text-center mt-3">
+                        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+                    </div>
+
+                    <!-- Дополнительные ссылки -->
+                    <div class="text-center mt-3">
+                        <a href="{% url 'register' %}" class="btn btn-link">Register</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

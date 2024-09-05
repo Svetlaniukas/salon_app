@@ -3,12 +3,26 @@
 {% block title %}Welcome to Hairdresser App{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="jumbotron text-center bg-light">
-        <h1 class="display-4">Welcome to Hairdresser App</h1>
-        <p class="lead">Manage your appointments, clients, and services effortlessly.</p>
-        <hr class="my-4">
-        <p>Choose your role to get started:</p>
+<div class="row">
+    <div class="col-md-6 text-center">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Are you a Hairdresser?</h5>
+                <p class="card-text">Register or log in to manage your appointments and clients.</p>
+                <a href="{% url 'register_hairdresser' %}" class="btn btn-primary">Hairdresser Registration</a>
+                <a href="{% url 'login' %}?next=/hairdressers/dashboard/" class="btn btn-secondary">Hairdresser Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Are you a Client?</h5>
+                <p class="card-text">Register or log in to book appointments with your favorite hairdresser.</p>
+                <a href="{% url 'register_client' %}" class="btn btn-primary">Client Registration</a>
+                <a href="{% url 'login' %}?next=/clients/dashboard/" class="btn btn-secondary">Client Login</a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

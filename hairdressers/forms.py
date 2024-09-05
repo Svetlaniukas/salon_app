@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Hairdresser
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -15,3 +16,10 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+
+class HairdresserForm(forms.ModelForm):
+    class Meta:
+        model = Hairdresser
+        fields = ['name', 'email', 'phone', 'specialization', 'experience', 'avatar']  # Поля, которые нужно редактировать

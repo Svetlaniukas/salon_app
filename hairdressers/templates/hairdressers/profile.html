@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Hairdresser Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Аватар -->
+                    <div class="avatar-container mb-4">
+                        {% if hairdresser.avatar %}
+                            <img src="{{ hairdresser.avatar.url }}" alt="{{ hairdresser.name }}'s Avatar" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
+                        {% else %}
+                            <!-- Загрузка библиотеки static -->
+                            {% load static %}
+                            <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px;">
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Имя и данные -->
+                    <h2 class="mb-3">{{ hairdresser.name }}</h2>
+                    <p class="text-muted mb-2">Specialization: {{ hairdresser.specialization }}</p>
+                    <p class="text-muted mb-2">Experience: {{ hairdresser.experience }} years</p>
+                    <p class="text-muted mb-2">Email: {{ hairdresser.email }}</p>
+                    <p class="text-muted mb-2">Phone: {{ hairdresser.phone }}</p>
+                    
+                    <!-- Форма редактирования профиля -->
+                    <form method="POST" enctype="multipart/form-data" class="mt-4">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ hairdresser.name }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ hairdresser.email }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{ hairdresser.phone }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="specialization" class="form-label">Specialization</label>
+                            <input type="text" class="form-control" id="specialization" name="specialization" value="{{ hairdresser.specialization }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience" class="form-label">Experience (in years)</label>
+                            <input type="number" class="form-control" id="experience" name="experience" value="{{ hairdresser.experience }}">
+                        </div>
+
+                        <!-- Поле для загрузки аватара -->
+                        <div class="form-group">
+                            <label for="avatar" class="form-label">Upload New Avatar</label>
+                            <input type="file" class="form-control-file" id="avatar" name="avatar">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block mt-3">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

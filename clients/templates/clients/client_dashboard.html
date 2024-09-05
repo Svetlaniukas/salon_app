@@ -3,10 +3,20 @@
 {% block title %}Client Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Client Dashboard</h1>
-    <ul>
-        {% for appointment in appointments %}
-            <li>{{ appointment.service }} on {{ appointment.date_time }}</li>
-        {% endfor %}
-    </ul>
+    <div class="container mt-5">
+        <h1>Client Dashboard</h1>
+
+        <!-- Проверяем, есть ли записи на прием -->
+        {% if appointments %}
+            <ul class="list-group">
+                {% for appointment in appointments %}
+                    <li class="list-group-item">
+                        {{ appointment.service }} on {{ appointment.date_time }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No appointments found.</p>
+        {% endif %}
+    </div>
 {% endblock %}

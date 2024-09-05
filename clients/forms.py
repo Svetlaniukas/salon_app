@@ -1,22 +1,18 @@
 from django import forms
+from .models import Client
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from.models import Client
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['phone', 'avatar']  # Укажи поля, которые должны быть доступны в форме
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+        fields = ['name', 'email', 'phone', 'avatar']  # Поля для заполнения клиента
 
-    class Meta:
-        model = User
-        fields = ("username", "email", "password1", "password2")
-
-    def save(self, commit=True):
-        user = super(CustomUserCreationForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
+        widgets = {
+            'email': forms.EmailInput(attrs={'readonly': 'readonly'}),  # Email доступен только для чтения
+        }

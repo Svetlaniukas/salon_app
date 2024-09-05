@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# settings.py
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -26,13 +32,17 @@ SECRET_KEY = "django-insecure-!)umi!++cnpb3k#-6^jr17$!17-5u5y-tpfpb)f(lh!5$#0g-z
 DEBUG = True
 
 ALLOWED_HOSTS = []
-LOGIN_REDIRECT_URL = 'client_dashboard'  # Перенаправление после успешного входа
-LOGOUT_REDIRECT_URL = 'home'  # Перенаправление после выхода
+# Перенаправление после успешного входа
+LOGIN_REDIRECT_URL = 'custom_login_redirect'  # После успешного входа перенаправляем на профиль
 
-LOGIN_REDIRECT_URL = 'client_dashboard'  # После успешного входа перенаправлять на панель клиента
-LOGOUT_REDIRECT_URL = 'home'  # После выхода перенаправлять на главную страницу
-LOGIN_URL = 'login'  # URL для страницы входа (авторизации)
+# Перенаправление после выхода
+LOGOUT_REDIRECT_URL = 'home'  # После выхода перенаправляем на главную страницу
 
+# URL для страницы входа
+LOGIN_URL = 'login'
+
+CSRF_COOKIE_SECURE = False  # Для разработки, отключите для production
+SESSION_COOKIE_SECURE = False  # Для разработки
 
 # Application definition
 

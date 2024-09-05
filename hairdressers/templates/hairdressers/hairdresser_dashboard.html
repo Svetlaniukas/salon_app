@@ -3,10 +3,21 @@
 {% block title %}Hairdresser Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Hairdresser Dashboard</h1>
-    <ul>
-        {% for appointment in appointments %}
-            <li>{{ appointment.client.user.username }} - {{ appointment.service }} on {{ appointment.date_time }}</li>
-        {% endfor %}
-    </ul>
+<div class="container mt-5">
+    <h1 class="text-center">Hairdresser Dashboard</h1>
+    
+    {% if appointments %}
+        <ul class="list-group mt-4">
+            {% for appointment in appointments %}
+                <li class="list-group-item">
+                    <strong>Client:</strong> {{ appointment.client.user.username }}<br>
+                    <strong>Service:</strong> {{ appointment.service }}<br>
+                    <strong>Date & Time:</strong> {{ appointment.date_time|date:"D, d M Y H:i" }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center mt-5">You have no upcoming appointments.</p>
+    {% endif %}
+</div>
 {% endblock %}
