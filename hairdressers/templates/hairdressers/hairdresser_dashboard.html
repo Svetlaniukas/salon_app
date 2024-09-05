@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Hairdresser Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Hairdresser Dashboard</h1>
+    <ul>
+        {% for appointment in appointments %}
+            <li>{{ appointment.client.user.username }} - {{ appointment.service }} on {{ appointment.date_time }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
