@@ -1,0 +1,20 @@
+<h1>Список записей</h1>
+
+<table>
+    <tr>
+        <th>Клиент</th>
+        <th>Парикмахер</th>
+        <th>Дата</th>
+        <th>Начало</th>
+        <th>Конец</th>
+    </tr>
+    {% for appointment in appointments %}
+    <tr>
+        <td>{{ appointment.client.user.username }}</td>
+        <td>{{ appointment.hairdresser.user.username }}</td>
+        <td>{{ appointment.date }}</td>
+        <td>{{ appointment.start_time }}</td>
+        <td>{{ appointment.end_time }}</td>
+    </tr>
+    {% endfor %}
+</table>

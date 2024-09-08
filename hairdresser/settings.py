@@ -21,6 +21,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -74,7 +75,7 @@ ROOT_URLCONF = "hairdresser.urls"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Убедись, что здесь правильный путь
+        'DIRS': [BASE_DIR / 'templates'],  # Убедитесь, что папка templates существует
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,10 +83,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'hairdresser.context_processors.user_role',  # Ваш контекстный процессор
             ],
         },
     },
 ]
+
 
 
 WSGI_APPLICATION = "hairdresser.wsgi.application"

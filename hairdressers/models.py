@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Hairdresser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hairdresser_profile')  # Добавьте related_name
     name = models.CharField(max_length=100, default='Default Name')  # Значение по умолчанию
     email = models.EmailField(default='default@example.com')  # Значение по умолчанию
     phone = models.CharField(max_length=15, blank=True, null=True)  # Делаем поле необязательным

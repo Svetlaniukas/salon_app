@@ -4,69 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Hairdresser App{% endblock %}</title>
-
-    {% load static %}
-
-    <!-- Подключение Bootstrap и вашего файла стилей -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- Навигационная панель -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{% url 'home' %}">Hairdresser App</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                    {% if user.client %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'client_profile' %}">Client Profile</a> <!-- Ссылка на профиль клиента -->
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'client_dashboard' %}">Client Dashboard</a>
-                        </li>
-                    {% elif user.hairdresser %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'hairdresser_profile' %}">Hairdresser Profile</a> <!-- Ссылка на профиль парикмахера -->
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'hairdresser_dashboard' %}">Hairdresser Dashboard</a>
-                        </li>
-                    {% endif %}
+                    <!-- Отладочная информация -->
                     <li class="nav-item">
-                        <!-- Форма для выхода -->
+                        <span class="nav-link">
+                            User: {{ user.username }},
+                            is_client: {{ is_client }},
+                            is_hairdresser: {{ is_hairdresser }}
+                        </span>
+                    </li>
+    
+                    {% if is_client %}
+                        <!-- Навигация для клиента -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'client_profile' %}">Client Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'client_dashboard' %}">Client Dashboard</a></li>
+                    {% elif is_hairdresser %}
+                        <!-- Навигация для парикмахера -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'hairdresser_profile' %}">Hairdresser Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'hairdresser_dashboard' %}">Hairdresser Dashboard</a></li>
+                    {% endif %}
+                    <!-- Кнопка выхода -->
+                    <li class="nav-item">
                         <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
                             {% csrf_token %}
                         </form>
                         <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        <!-- Ссылка на вход для парикмахера -->
-                        <a class="nav-link" href="{% url 'login' %}?next=/hairdressers/dashboard/">Login Hairdresser</a>
-                    </li>
-                    <li class="nav-item">
-                        <!-- Ссылка на вход для клиента -->
-                        <a class="nav-link" href="{% url 'login' %}?next=/clients/dashboard/">Login Client</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
+                    <!-- Кнопки для входа и регистрации -->
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next=/clients/dashboard/">Login Client</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next=/hairdressers/dashboard/">Login Hairdresser</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
                 {% endif %}
             </ul>
         </div>
     </nav>
+    
 
-    <!-- Контент страницы -->
     <div class="container mt-4">
         {% block content %}
+        <!-- Основной контент страниц -->
         {% endblock %}
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Подключение jQuery и Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    {% block scripts %}
+    <!-- Место для дополнительных скриптов -->
+    {% endblock %}
 </body>
 </html>
