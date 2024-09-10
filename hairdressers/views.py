@@ -58,30 +58,30 @@ def hairdresser_profile_create(request):
 def hairdresser_appointments(request):
     hairdresser = request.user.hairdresser_profile
     appointments = Appointment.objects.filter(hairdresser=hairdresser)
+
     events = []
     for appointment in appointments:
         events.append({
             'id': appointment.id,
-            'title': f'{appointment.service} for {appointment.client.user.username}',
+            'title': f'{appointment.service} - {appointment.client.user.username}',  # Отображаем имя клиента
             'start': f'{appointment.date}T{appointment.start_time}',
             'end': f'{appointment.date}T{appointment.end_time}',
+            'client': appointment.client.user.username,  # Имя клиента
+            'service': appointment.service
         })
+
     return JsonResponse(events, safe=False)
 
-# Панель парикмахера
+
 # Панель парикмахера
 @login_required
 def hairdresser_dashboard(request):
-    if hasattr(request.user, 'hairdresser_profile'):
-        hairdresser = request.user.hairdresser_profile  # Получаем профиль парикмахера
-        appointments = Appointment.objects.filter(hairdresser=hairdresser)
-        return render(request, 'hairdressers/hairdresser_dashboard.html', {
-            'hairdresser': hairdresser,
-            'appointments': appointments
-        })
-    else:
-        # Если профиль парикмахера не найден, перенаправляем на страницу создания профиля
-        return redirect('hairdresser_profile_create')
+    hairdresser = request.user.hairdresser_profile
+    appointments = Appointment.objects.filter(hairdresser=hairdresser)  # Записи только для текущего парикмахера
+    return render(request, 'hairdressers/hairdresser_dashboard.html', {
+        'hairdresser': hairdresser,
+        'appointments': appointments
+    })
 
 
 
