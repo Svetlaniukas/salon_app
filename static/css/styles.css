@@ -1,15 +1,79 @@
+/* style.css */
+.navbar {
+    background-color: #343a40;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #f8f9fa !important;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 30px 0;
+    margin-top: 40px;
+}
+
+.footer a {
+    color: #f8f9fa;
+}
+
+.footer a:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.social-icons i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: #f8f9fa;
+}
+
+.social-icons i:hover {
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .social-icons i {
+        font-size: 1.2rem;
+    }
+}
+
+/* Avatar styles */
 .avatar {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Card styles */
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: none;
     border-radius: 10px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
 }
 
 .card-header {
@@ -20,17 +84,167 @@
     text-align: center;
 }
 
+/* Form label and button styles */
 .form-label {
     font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4);
 }
 
 .btn-success {
     background-color: #28a745;
     border-color: #28a745;
     width: 100%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.btn-success:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+}
+
+/* Calendar styles */
 #calendar {
     max-width: 900px;
     margin: 0 auto;
-  }
-  
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Star rating styles */
+.rating-stars {
+    color: gold;
+    font-size: 1.2em;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.rating-stars:hover {
+    transform: scale(1.1);
+    color: #ffc107;
+}
+
+/* Reviews list styles */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Review form styles */
+.review-form {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-form form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.review-form form input,
+.review-form form textarea {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.review-form form button {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-form form button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 91, 187, 0.4);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    #calendar {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .review-item {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .review-form {
+        padding: 15px;
+    }
+
+    .review-form form {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .card {
+        margin-bottom: 15px;
+    }
+
+    .review-item {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .review-form {
+        padding: 10px;
+    }
+}

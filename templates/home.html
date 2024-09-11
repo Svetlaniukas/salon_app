@@ -25,4 +25,39 @@
         </div>
     </div>
 </div>
+
+<div class="hairdressers-list mt-4">
+    <h2>Our Hairdressers</h2>
+    <div class="row">
+        {% for hairdresser in hairdressers %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 animate__animated animate__zoomIn">
+                <img src="{{ hairdresser.avatar.url }}" class="card-img-top rounded-circle mx-auto mt-3" alt="Hairdresser Avatar" style="height: 150px; width: 150px;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ hairdresser.user.username }}</h5>
+                    <p class="card-text">{{ hairdresser.specialization }}</p>
+                    <p class="card-text">Experience: {{ hairdresser.experience }} years</p>
+
+                    <!-- Display rating -->
+                    <p class="card-text">Rating: 
+                        <!-- Loop for filled stars -->
+                        {% for _ in hairdresser.filled_stars|make_list %}
+                            <span class="text-warning">★</span>
+                        {% endfor %}
+                        
+                        <!-- Loop for unfilled stars -->
+                        {% for _ in hairdresser.empty_stars|make_list %}
+                            <span class="text-muted">☆</span>
+                        {% endfor %}
+                        
+                        {{ hairdresser.get_average_rating }} / 5
+                    </p>
+
+                    <a href="{% url 'hairdresser_reviews' hairdresser.id %}" class="btn btn-primary">See Reviews</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

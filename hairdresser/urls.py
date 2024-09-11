@@ -16,6 +16,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', client_views.home, name='home'),
     path('login-redirect/', client_views.custom_login_redirect, name='custom_login_redirect'),
+    path('reviews/', include('reviews.urls')),  # Подключаем приложение отзывов
+    
 
     # Восстановление пароля
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),

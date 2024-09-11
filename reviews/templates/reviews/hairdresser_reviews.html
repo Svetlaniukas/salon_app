@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Reviews for {{ hairdresser.user.username }}{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Reviews for {{ hairdresser.user.username }}</h1>
+
+        <!-- Список отзывов -->
+        <div class="reviews-list">
+            {% for review in reviews %}
+                <div class="review-item mb-4 p-3 border rounded">
+                    <p><strong>{{ review.client.username }}</strong>:</p>
+                    <p>Rating: 
+                        <span class="rating-stars">
+                            {% for i in "12345" %}
+                                {% if i <= review.rating %}
+                                    ★
+                                {% else %}
+                                    ☆
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        {{ review.rating }} / 5
+                    </p>
+                    <p>{{ review.comment }}</p>
+                    <p><small>Reviewed on {{ review.created_at }}</small></p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Форма для добавления отзыва -->
+        <div class="review-form mt-4">
+            <h2>Leave a Review</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

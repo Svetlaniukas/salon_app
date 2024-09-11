@@ -8,15 +8,24 @@ from datetime import timedelta
 
 from django.http import JsonResponse
 
-# Главная страница
-from django.shortcuts import render
+from hairdressers.models import Hairdresser
+
 
 def home(request):
-    context = {}
-    if request.user.is_authenticated:
-        context['is_client'] = hasattr(request.user, 'client_profile')
-        context['is_hairdresser'] = hasattr(request.user, 'hairdresser_profile')
+    hairdressers = Hairdresser.objects.all()
+    for hairdresser in hairdressers:
+        avg_rating = hairdresser.get_average_rating()
+        hairdresser.filled_stars = int(avg_rating)  # Заполненные звезды
+        hairdresser.empty_stars = 5 - int(avg_rating)  # Пустые звезды
+
+    context = {
+        'hairdressers': hairdressers,
+        'is_client': hasattr(request.user, 'client_profile') if request.user.is_authenticated else False,
+        'is_hairdresser': hasattr(request.user, 'hairdresser_profile') if request.user.is_authenticated else False,
+    }
     return render(request, 'home.html', context)
+
+
 
 # Регистрация клиента
 def register_client(request):

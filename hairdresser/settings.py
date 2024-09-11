@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'clients',  # Приложение клиентов
     'hairdressers',  # Приложение парикмахеров
     'appointments',  # Приложение записей
+    'reviews',
     
 ]
 
