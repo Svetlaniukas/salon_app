@@ -1,3 +1,4 @@
+<!-- Templates/home.html -->
 {% extends 'base.html' %}
 
 {% block title %}Welcome to Hairdresser App{% endblock %}
@@ -26,6 +27,7 @@
     </div>
 </div>
 
+<!-- Отображение парикмахеров -->
 <div class="hairdressers-list mt-4">
     <h2>Our Hairdressers</h2>
     <div class="row">
@@ -40,24 +42,47 @@
 
                     <!-- Display rating -->
                     <p class="card-text">Rating: 
-                        <!-- Loop for filled stars -->
                         {% for _ in hairdresser.filled_stars|make_list %}
                             <span class="text-warning">★</span>
                         {% endfor %}
-                        
-                        <!-- Loop for unfilled stars -->
                         {% for _ in hairdresser.empty_stars|make_list %}
                             <span class="text-muted">☆</span>
                         {% endfor %}
-                        
                         {{ hairdresser.get_average_rating }} / 5
                     </p>
 
                     <a href="{% url 'hairdresser_reviews' hairdresser.id %}" class="btn btn-primary">See Reviews</a>
+
+                    <!-- Отзывы -->
+                    <div class="reviews mt-3">
+                        <h5>Reviews:</h5>
+                        {% if hairdresser.review_set.all %}
+                            <ul>
+                                {% for review in hairdresser.review_set.all %}
+                                    <li>{{ review.text }} - {{ review.rating }} stars</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No reviews available</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+</div>
+
+<!-- Цитата дня -->
+<div class="quote-section mt-4">
+    <h2>Quote of the Day</h2>
+    {% if quote %}
+        <blockquote class="blockquote text-center">
+            <p class="mb-0">"{{ quote.quote }}"</p>
+            <footer class="blockquote-footer">{{ quote.author }}</footer>
+        </blockquote>
+    {% else %}
+        <p>Could not fetch the quote at this moment.</p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -14,7 +14,7 @@ urlpatterns = [
     path('register/', client_views.register_client, name='register'),
     path('register_hairdresser/', hairdresser_views.register_hairdresser, name='register_hairdresser'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', client_views.home, name='home'),
+    path('', hairdresser_views.home, name='home'),
     path('login-redirect/', client_views.custom_login_redirect, name='custom_login_redirect'),
     path('reviews/', include('reviews.urls')),  # Подключаем приложение отзывов
     

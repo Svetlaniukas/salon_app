@@ -6,15 +6,27 @@ from .models import Hairdresser
 from appointments.models import Appointment
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from .services import get_random_quote  # Функция для получения случайной цитаты
 
-# Главная страница
 def home(request):
     context = {}
+
+    # Проверяем, является ли пользователь клиентом или парикмахером
     if request.user.is_authenticated:
         context['is_client'] = hasattr(request.user, 'client_profile')
         context['is_hairdresser'] = hasattr(request.user, 'hairdresser_profile')
-    return render(request, 'home.html', context)
 
+    # Получаем всех парикмахеров
+    hairdressers = Hairdresser.objects.all()
+
+    # Получаем случайную цитату через API
+    quote_data = get_random_quote()
+    context['quote'] = quote_data
+
+    # Передаём список парикмахеров в контекст (отзывы можно получить через reverse-связь review_set)
+    context['hairdressers'] = hairdressers
+
+    return render(request, 'home.html', context)
 # Регистрация парикмахера
 # Регистрация парикмахера
 def register_hairdresser(request):
