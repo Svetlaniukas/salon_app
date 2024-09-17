@@ -1,0 +1,102 @@
+Hairdresser App: Testing and Report
+
+Tests and Their Purpose
+
+The testing process was conducted to verify the operation of key system features, such as appointment creation, user registration, and adding reviews. Below is a description of each test, what it checks, and its results.
+
+1. Appointment Creation Test (Appointments)
+File: appointments/tests.py
+
+Description:
+
+This test verifies the creation of an appointment between a client and a hairdresser. The test simulates the process of creating a new appointment via a POST request.
+
+Key Steps:
+
+Initialization of data for the client, hairdresser, and appointment time.
+Sending a POST request with the necessary data to the appointment creation endpoint.
+Verification:
+Successful redirect after creating the appointment (expected status code 302).
+Verifying that the appointment was indeed created (the number of appointments increased by 1).
+Checks:
+
+Successful response (HTTP status code 302).
+Creation of a new appointment.
+Result:
+
+The test passed successfully.
+2. Hairdresser Appointment Creation Test
+File: hairdressers/tests.py
+
+Description:
+
+This test checks the ability to create an appointment for a hairdresser through the dashboard. A key aspect of this test is to ensure that the appointment is correctly linked to the client and the hairdresser.
+
+Key Steps:
+
+Creation of a test client and hairdresser.
+Sending a POST request to create an appointment with selected services and time.
+Verification:
+Correct server response after creating the appointment (status code 302).
+The number of appointments increased by 1.
+Checks:
+
+Correct redirect.
+Creation of the appointment in the database.
+Result:
+
+The test passed successfully.
+3. Review Creation Test (Review)
+File: reviews/tests.py
+
+Description:
+
+The test verifies the ability of a client to leave a review on a hairdresser’s page. The test focuses on the client’s ability to leave a review and assign a rating to the hairdresser.
+
+Key Steps:
+
+Creation of a client and hairdresser user.
+Client login.
+Sending a POST request with review data (rating and comment).
+Verification:
+Successful form submission.
+Creation of the review in the database.
+Checks:
+
+Ability to leave a review.
+Correct creation of the review record in the database.
+Result:
+
+The test passed successfully.
+4. User Registration Test
+File: clients/tests.py
+
+Description:
+
+This test checks the process of registering a new user (client or hairdresser). The test simulates the process of filling out the registration form and submitting the data to the server.
+
+Key Steps:
+
+Sending a POST request with registration data.
+Verification:
+Successful server response (status code 302).
+The creation of a new user in the database.
+Checks:
+
+Successful registration of a new user.
+Creation of the user object in the database.
+Result:
+
+The test passed successfully.
+General Conclusions
+
+The testing of the Hairdresser App confirmed that the main functionalities of the application are working correctly:
+
+Creation of appointments between clients and hairdressers.
+Registration of new users.
+Submitting reviews.
+The testing process showed that the system reliably handles key user scenarios and correctly records data into the database.
+
+Next Steps:
+Continue to expand tests to cover additional features.
+Regularly run automated tests when making code changes to maintain system stability.

@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ReviewForm
 from .models import Review
 from hairdressers.models import Hairdresser
+from django.contrib.auth.decorators import login_required
+
 
 def hairdresser_reviews(request, hairdresser_id):
     hairdresser = Hairdresser.objects.get(id=hairdresser_id)  # Получаем только парикмахера
@@ -22,5 +24,26 @@ def hairdresser_reviews(request, hairdresser_id):
     return render(request, 'reviews/hairdresser_reviews.html', {
         'hairdresser': hairdresser,
         'reviews': reviews,  # Передаем только отзывы для конкретного парикмахера
+        'form': form
+    })
+
+
+@login_required
+def create_review(request, hairdresser_id):
+    hairdresser = get_object_or_404(Hairdresser, id=hairdresser_id)
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.client = request.user  # Присваиваем объект User
+            review.hairdresser = hairdresser
+            review.save()
+            return redirect('hairdresser_reviews', hairdresser_id=hairdresser.id)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'reviews/hairdresser_reviews.html', {
+        'hairdresser': hairdresser,
         'form': form
     })

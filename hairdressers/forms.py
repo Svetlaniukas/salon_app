@@ -23,3 +23,14 @@ class HairdresserForm(forms.ModelForm):
     class Meta:
         model = Hairdresser
         fields = ['name', 'email', 'phone', 'specialization', 'experience', 'avatar']  # Поля, которые нужно редактировать
+
+
+class RatingFilterForm(forms.Form):
+    MIN_RATING_CHOICES = [(i, f'{i} stars and up') for i in range(1, 6)]
+
+    min_rating = forms.ChoiceField(
+        choices=MIN_RATING_CHOICES,
+        required=False,
+        label='Minimum Rating',
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

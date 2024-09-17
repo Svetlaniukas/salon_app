@@ -5,6 +5,7 @@ from clients.models import Client
 from hairdressers.models import Hairdresser
 from datetime import datetime, timezone
 from django.contrib.auth.decorators import login_required
+from .forms import AppointmentForm
 
 @login_required
 def appointment_list(request):
@@ -21,11 +22,9 @@ def appointment_list(request):
 
     return JsonResponse(events, safe=False)
 
-# appointments/views.py
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Appointment
-from django.utils.dateparse import parse_datetime
+
+from django.http import JsonResponse, HttpResponseRedirect
+from django.urls import reverse
 
 def create_appointment(request):
     if request.method == 'POST':
@@ -50,9 +49,13 @@ def create_appointment(request):
                 end_time=end.split('T')[1]
             )
 
-            return JsonResponse({'status': 'success'})
+            # После успешного создания записи перенаправляем пользователя
+            return HttpResponseRedirect(reverse('client_dashboard'))  # Измените на нужный маршрут
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
 
 def update_appointment(request):
     if request.method == 'POST':

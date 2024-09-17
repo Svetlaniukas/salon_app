@@ -5,10 +5,6 @@ from django.utils import timezone
 from clients.models import Client  # Импортируем модель Client из приложения clients
 from hairdressers.models import Hairdresser  # Импортируем модель Hairdresser из приложения hairdressers
 
-# appointments/models.py
-from django.db import models
-from clients.models import Client
-from hairdressers.models import Hairdresser
 
 class Appointment(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='appointments')

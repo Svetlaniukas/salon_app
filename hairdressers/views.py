@@ -5,8 +5,11 @@ from .forms import CustomUserCreationForm, HairdresserForm
 from .models import Hairdresser
 from appointments.models import Appointment
 from django.http import JsonResponse
-from django.contrib.auth.models import User
+from .forms import RatingFilterForm
 from .services import get_random_quote  # Функция для получения случайной цитаты
+from reviews.models import Review
+from django.db.models import Avg
+
 
 def home(request):
     context = {}
@@ -19,15 +22,28 @@ def home(request):
     # Получаем всех парикмахеров
     hairdressers = Hairdresser.objects.all()
 
+    # Фильтрация по рейтингу
+    if request.method == 'GET':
+        form = RatingFilterForm(request.GET)
+        if form.is_valid():
+            min_rating = form.cleaned_data.get('min_rating')
+            if min_rating:
+                hairdressers = hairdressers.filter(reviews__rating__gte=min_rating).distinct()
+
+    else:
+        form = RatingFilterForm()
+
+    # Передаём форму и парикмахеров в контекст
+    context['form'] = form
+    context['hairdressers'] = hairdressers
+
     # Получаем случайную цитату через API
     quote_data = get_random_quote()
     context['quote'] = quote_data
 
-    # Передаём список парикмахеров в контекст (отзывы можно получить через reverse-связь review_set)
-    context['hairdressers'] = hairdressers
-
     return render(request, 'home.html', context)
-# Регистрация парикмахера
+
+
 # Регистрация парикмахера
 def register_hairdresser(request):
     if request.method == 'POST':

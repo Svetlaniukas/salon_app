@@ -27,6 +27,22 @@
     </div>
 </div>
 
+<!-- Форма для фильтрации по рейтингу -->
+<div class="filter-rating-form mt-4">
+    <form method="get" action="" class="form-inline justify-content-center">
+        <label for="rating" class="mr-2">Filter by Rating:</label>
+        <select name="rating" id="rating" class="form-control mr-2">
+            <option value="">All Ratings</option>
+            <option value="5" {% if rating|default:"" == "5" %}selected{% endif %}>5 Stars</option>
+            <option value="4" {% if rating|default:"" == "4" %}selected{% endif %}>4 Stars & Up</option>
+            <option value="3" {% if rating|default:"" == "3" %}selected{% endif %}>3 Stars & Up</option>
+            <option value="2" {% if rating|default:"" == "2" %}selected{% endif %}>2 Stars & Up</option>
+            <option value="1" {% if rating|default:"" == "1" %}selected{% endif %}>1 Star & Up</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+</div>
+
 <!-- Отображение парикмахеров -->
 <div class="hairdressers-list mt-4">
     <h2>Our Hairdressers</h2>
@@ -56,10 +72,10 @@
                     <!-- Отзывы -->
                     <div class="reviews mt-3">
                         <h5>Reviews:</h5>
-                        {% if hairdresser.review_set.all %}
+                        {% if hairdresser.reviews.all %}
                             <ul>
-                                {% for review in hairdresser.review_set.all %}
-                                    <li>{{ review.text }} - {{ review.rating }} stars</li>
+                                {% for review in hairdresser.reviews.all %}
+                                    <li>{{ review.comment }} - {{ review.rating }} stars</li>
                                 {% endfor %}
                             </ul>
                         {% else %}
