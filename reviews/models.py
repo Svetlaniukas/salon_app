@@ -1,8 +1,4 @@
 from django.db import models
-
-# Create your models here.
-# reviews/models.py
-from django.db import models
 from django.contrib.auth.models import User  # Используем модель пользователя
 from hairdressers.models import Hairdresser  # Импортируем модель парикмахера
 
