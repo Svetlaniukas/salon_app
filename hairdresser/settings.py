@@ -24,7 +24,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Static file settings
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Directory for static files
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Directory for additional static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory for collected static files
 
 # WhiteNoise settings for serving static files in production
