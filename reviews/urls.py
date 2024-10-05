@@ -4,4 +4,8 @@ from . import views
 urlpatterns = [
     path('hairdresser/<int:hairdresser_id>/reviews/', views.hairdresser_reviews, name='hairdresser_reviews'),
     path('hairdresser/<int:hairdresser_id>/reviews/create/', views.create_review, name='create_review'), 
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> c11d9a7 (Added updated .env and project changes)
