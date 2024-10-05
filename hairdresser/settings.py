@@ -36,6 +36,7 @@ SECRET_KEY = config('SECRET_KEY')  # Load the secret key from .env
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)  # Load debug mode from .env
 
+# Allow hosts to be set from .env or default to empty
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Redirect after successful login
@@ -47,8 +48,9 @@ LOGOUT_REDIRECT_URL = 'home'  # After logout, redirect to home page
 # URL for login page
 LOGIN_URL = 'login'
 
-CSRF_COOKIE_SECURE = False  # Disable for development, enable in production
-SESSION_COOKIE_SECURE = False  # Disable for development, enable in production
+# Secure settings - Disable for development, enable in production
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool) 
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 
 # Application definition
 
@@ -96,21 +98,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "hairdresser.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# Database configuration using environment variables
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
     )
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -126,27 +122,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-# Language settings
 LANGUAGE_CODE = "en-us"
-
-# Time zone settings
 TIME_ZONE = "UTC"
-
-USE_I18N = True  # Enable internationalization
-
-USE_TZ = True  # Enable timezone support
-
+USE_I18N = True
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"  # Set the default primary key type
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
