@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config  # Import decouple to read from .env
-import os
 import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,8 +36,8 @@ SECRET_KEY = config('SECRET_KEY')  # Load the secret key from .env
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)  # Load debug mode from .env
 
-# Allow hosts to be set from .env or default to empty
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=lambda v: [s.strip() for s in v.split(',')])
+# Allow hosts to be set from .env or default to the app domain on Render
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['svetlaniukas-hairdresser-app.onrender.com', 'localhost'], cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Redirect after successful login
 LOGIN_REDIRECT_URL = 'custom_login_redirect'  # After login, redirect to profile
@@ -49,11 +49,10 @@ LOGOUT_REDIRECT_URL = 'home'  # After logout, redirect to home page
 LOGIN_URL = 'login'
 
 # Secure settings - Disable for development, enable in production
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool) 
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)  # Set to True in production
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)  # Set to True in production
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -100,13 +99,10 @@ WSGI_APPLICATION = "hairdresser.wsgi.application"
 
 # Database configuration using environment variables
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -123,16 +119,29 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_URL = "static/"
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Logging settings for better error tracking
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}

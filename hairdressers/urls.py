@@ -8,3 +8,4 @@ urlpatterns = [
     path('profile/create/', views.hairdresser_profile_create, name='hairdresser_profile_create'), 
     path('api/hairdresser_appointments/', views.hairdresser_appointments, name='hairdresser_appointments'),
     path('api/list/', views.hairdresser_list, name='hairdresser_list'), 
+]
