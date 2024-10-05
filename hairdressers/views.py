@@ -91,14 +91,15 @@ def hairdresser_appointments(request):
     for appointment in appointments:
         events.append({
             'id': appointment.id,
-            'title': f'{appointment.service} - {appointment.client.user.username}',  # Display the client's name
+            'title': f'{appointment.service} - {appointment.client.user.username if appointment.client else "No Client"}',  
             'start': f'{appointment.date}T{appointment.start_time}',
             'end': f'{appointment.date}T{appointment.end_time}',
-            'client': appointment.client.user.username,  # Client's name
+            'client': appointment.client.user.username if appointment.client else 'No Client', 
             'service': appointment.service
         })
 
     return JsonResponse(events, safe=False)
+
 
 
 # Hairdresser dashboard

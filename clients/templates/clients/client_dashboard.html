@@ -50,45 +50,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal for editing and deleting an appointment -->
-    <div class="modal fade" id="editAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="editAppointmentModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editAppointmentModalLabel">Edit/Delete Appointment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editAppointmentForm">
-                        <input type="hidden" id="editAppointmentId">
-                        <div class="form-group">
-                            <label for="editService">Service</label>
-                            <select class="form-control" id="editService" required>
-                                <option value="haircut">Haircut</option>
-                                <option value="coloring">Coloring</option>
-                                <option value="manicure">Manicure</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="editStartTime">Start Time</label>
-                            <input type="time" class="form-control" id="editStartTime" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editEndTime">End Time</label>
-                            <input type="time" class="form-control" id="editEndTime" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="deleteAppointment">Delete</button>
-                    <button type="button" class="btn btn-primary" id="updateAppointment">Update</button>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block scripts %}
@@ -129,13 +90,6 @@
                             hairdresserSelect.appendChild(option);
                         });
                     });
-                },
-                eventClick: function(info) {
-                    $('#editAppointmentModal').modal('show');
-                    document.getElementById('editAppointmentId').value = info.event.id;
-                    document.getElementById('editService').value = info.event.extendedProps.service;
-                    document.getElementById('editStartTime').value = info.event.startStr.split('T')[1];
-                    document.getElementById('editEndTime').value = info.event.endStr.split('T')[1];
                 }
             });
 
@@ -168,46 +122,6 @@
                 } else {
                     alert('Please fill all fields');
                 }
-            });
-
-            // Update appointment
-            document.getElementById('updateAppointment').addEventListener('click', function() {
-                var appointmentId = document.getElementById('editAppointmentId').value;
-                var service = document.getElementById('editService').value;
-                var startTime = document.getElementById('editStartTime').value;
-                var endTime = document.getElementById('editEndTime').value;
-
-                $.post('/appointments/update/', {
-                    id: appointmentId,
-                    service: service,
-                    start: startTime,
-                    end: endTime,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                }, function(data) {
-                    if (data.status === 'success') {
-                        $('#editAppointmentModal').modal('hide');
-                        calendar.refetchEvents();
-                    } else {
-                        alert('Error updating appointment: ' + data.message);
-                    }
-                });
-            });
-
-            // Delete appointment
-            document.getElementById('deleteAppointment').addEventListener('click', function() {
-                var appointmentId = document.getElementById('editAppointmentId').value;
-
-                $.post('/appointments/delete/', {
-                    id: appointmentId,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                }, function(data) {
-                    if (data.status === 'success') {
-                        $('#editAppointmentModal').modal('hide');
-                        calendar.refetchEvents();
-                    } else {
-                        alert('Error deleting appointment: ' + data.message);
-                    }
-                });
             });
 
             calendar.render();

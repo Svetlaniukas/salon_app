@@ -1,12 +1,11 @@
 from django.db import models
-from django.utils import timezone
 from clients.models import Client  # Importing the Client model from the clients app
 from hairdressers.models import Hairdresser  # Importing the Hairdresser model from the hairdressers app
 
 class Appointment(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='appointments')  # Establishes a foreign key relationship with the Client model
-    hairdresser = models.ForeignKey(Hairdresser, on_delete=models.CASCADE, related_name='appointments')  # Establishes a foreign key relationship with the Hairdresser model
-    service = models.CharField(max_length=100, choices=[  # Defines the type of service for the appointment
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)  
+    hairdresser = models.ForeignKey(Hairdresser, on_delete=models.CASCADE, related_name='appointments')  
+    service = models.CharField(max_length=100, choices=[
         ('haircut', 'Haircut'),
         ('coloring', 'Coloring'),
         ('manicure', 'Manicure'),
@@ -17,4 +16,7 @@ class Appointment(models.Model):
     end_time = models.TimeField()  # Appointment end time
 
     def __str__(self):
-        return f"Appointment for {self.client.user.username} with {self.hairdresser.user.username}"  # String representation of the appointment
+        if self.client:
+            return f"Appointment for {self.client.user.username} with {self.hairdresser.user.username}"
+        else:
+            return f"Appointment with {self.hairdresser.user.username} (no client)"  

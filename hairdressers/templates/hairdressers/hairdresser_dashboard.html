@@ -86,14 +86,12 @@
 {% endblock %}
 
 {% block scripts %}
-    <!-- FullCalendar scripts -->
+    <!-- FullCalendar and jQuery -->
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/main.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.15/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.15/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.15/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.15/index.global.min.js"></script>
-
-    <!-- jQuery and Bootstrap scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -124,7 +122,7 @@
                 }
             });
 
-            // Save new appointment
+            // Save new appointment (для парикмахера не нужно выбирать парикмахера)
             document.getElementById('saveAppointment').addEventListener('click', function() {
                 var service = document.getElementById('service').value;
                 var startTime = document.getElementById('startTime').value;
@@ -142,8 +140,8 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     }, function(data) {
                         if (data.status === 'success') {
-                            $('#appointmentModal').modal('hide');  // Close modal
-                            calendar.refetchEvents();  // Refresh calendar events
+                            $('#appointmentModal').modal('hide');
+                            calendar.refetchEvents();
                         } else {
                             alert('Error creating appointment: ' + data.message);
                         }
