@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from decouple import config  # Import decouple to read from .env
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -100,14 +101,9 @@ WSGI_APPLICATION = "hairdresser.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),  # Load DB name from .env
-        'USER': config('DB_USER'),  # Load DB user from .env
-        'PASSWORD': config('DB_PASSWORD'),  # Load DB password from .env
-        'HOST': config('DB_HOST', default='localhost'),  # Load DB host, default is localhost
-        'PORT': config('DB_PORT', default='5432'),  # Load DB port, default is 5432
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 
