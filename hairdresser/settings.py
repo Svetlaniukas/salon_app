@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config  # Import decouple to read from .env
-import dj_database_url
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +27,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# WhiteNoise settings for serving static files in production
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -36,8 +39,7 @@ SECRET_KEY = config('SECRET_KEY')  # Load the secret key from .env
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)  # Load debug mode from .env
 
-# Allow hosts to be set from .env or default to the app domain on Render
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['svetlaniukas-hairdresser-app.onrender.com', 'localhost'], cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=lambda v: [s.strip() for s in v.split(',')])
 
 # Redirect after successful login
 LOGIN_REDIRECT_URL = 'custom_login_redirect'  # After login, redirect to profile
@@ -48,11 +50,11 @@ LOGOUT_REDIRECT_URL = 'home'  # After logout, redirect to home page
 # URL for login page
 LOGIN_URL = 'login'
 
-# Secure settings - Disable for development, enable in production
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)  # Set to True in production
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)  # Set to True in production
+CSRF_COOKIE_SECURE = False  # Disable for development, enable in production
+SESSION_COOKIE_SECURE = False  # Disable for development, enable in production
 
 # Application definition
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -67,6 +69,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Added for static file handling in production
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -97,12 +100,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "hairdresser.wsgi.application"
 
-# Database configuration using environment variables
+
+# Database
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
+
 # Password validation
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -118,30 +129,33 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
+
+# Language settings
 LANGUAGE_CODE = "en-us"
+
+# Time zone settings
 TIME_ZONE = "UTC"
-USE_I18N = True
-USE_TZ = True
+
+USE_I18N = True  # Enable internationalization
+
+USE_TZ = True  # Enable timezone support
+
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = "static/"
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-# Logging settings for better error tracking
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-    },
-}
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"  # Set the default primary key type
