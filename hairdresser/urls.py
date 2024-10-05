@@ -29,7 +29,10 @@ urlpatterns = [
     path('hairdresser/profile/', hairdresser_views.hairdresser_profile, name='hairdresser_profile'),  # Hairdresser profile
 ]
 
-# Serve media files in development mode
+# Serve media files during development
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Handle media files
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Handle static files
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files during development (optional, generally handled by WhiteNoise in production)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

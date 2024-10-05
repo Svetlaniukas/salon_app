@@ -34,7 +34,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 SECRET_KEY = config('SECRET_KEY')  # Load the secret key from .env
 DEBUG = config('DEBUG', default=False, cast=bool)  # Load debug mode from .env
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost', 
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], 
                        cast=lambda v: [s.strip() for s in v.split(',')])  # Allow hosts
 
 # Redirect after successful login
@@ -47,8 +47,8 @@ LOGOUT_REDIRECT_URL = 'home'  # After logout, redirect to home page
 LOGIN_URL = 'login'
 
 # CSRF and session cookie security for production
-CSRF_COOKIE_SECURE = True  # Enable in production
-SESSION_COOKIE_SECURE = True  # Enable in production
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)  # Enable in production
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)  # Enable in production
 
 # Application definition
 INSTALLED_APPS = [
@@ -126,6 +126,7 @@ USE_I18N = True  # Enable internationalization
 USE_TZ = True  # Enable timezone support
 
 # Static files (CSS, JavaScript, Images) settings
+# Ensure these settings are correct
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory for collected static files
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Additional static files directories
