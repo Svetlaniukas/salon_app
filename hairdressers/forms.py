@@ -22,7 +22,7 @@ class CustomUserCreationForm(UserCreationForm):
 class HairdresserForm(forms.ModelForm):
     class Meta:
         model = Hairdresser
-        fields = ['name', 'email', 'phone', 'specialization', 'experience', 'avatar']  # Поля, которые нужно редактировать
+        fields = ['name', 'email', 'phone', 'specialization', 'experience', 'avatar']  
 
 
 class RatingFilterForm(forms.Form):

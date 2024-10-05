@@ -11,8 +11,8 @@ class CustomUserCreationForm(UserCreationForm):
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['name', 'email', 'phone', 'avatar']  # Поля для заполнения клиента
+        fields = ['name', 'email', 'phone', 'avatar']  
 
         widgets = {
-            'email': forms.EmailInput(attrs={'readonly': 'readonly'}),  # Email доступен только для чтения
+            'email': forms.EmailInput(attrs={'readonly': 'readonly'}),
         }

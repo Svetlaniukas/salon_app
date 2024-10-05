@@ -1,4 +1,3 @@
-# reviews/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ReviewForm
 from .models import Review
@@ -7,23 +6,23 @@ from django.contrib.auth.decorators import login_required
 
 
 def hairdresser_reviews(request, hairdresser_id):
-    hairdresser = Hairdresser.objects.get(id=hairdresser_id)  # Получаем только парикмахера
-    reviews = Review.objects.filter(hairdresser=hairdresser)  # Фильтруем отзывы для этого парикмахера
+    hairdresser = Hairdresser.objects.get(id=hairdresser_id)  # Get the hairdresser object
+    reviews = Review.objects.filter(hairdresser=hairdresser)  # Filter reviews for this specific hairdresser
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
-            review.client = request.user  # Присваиваем текущего пользователя как клиента
-            review.hairdresser = hairdresser  # Присваиваем текущего парикмахера
+            review.client = request.user  # Assign the current user as the client
+            review.hairdresser = hairdresser  # Assign the current hairdresser
             review.save()
-            return redirect('hairdresser_reviews', hairdresser_id=hairdresser.id)  # Перенаправляем на страницу отзывов
+            return redirect('hairdresser_reviews', hairdresser_id=hairdresser.id)  # Redirect to the reviews page
     else:
         form = ReviewForm()
 
     return render(request, 'reviews/hairdresser_reviews.html', {
         'hairdresser': hairdresser,
-        'reviews': reviews,  # Передаем только отзывы для конкретного парикмахера
+        'reviews': reviews,  # Pass only the reviews for the specific hairdresser
         'form': form
     })
 
@@ -36,7 +35,7 @@ def create_review(request, hairdresser_id):
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
-            review.client = request.user  # Присваиваем объект User
+            review.client = request.user  # Assign the User object
             review.hairdresser = hairdresser
             review.save()
             return redirect('hairdresser_reviews', hairdresser_id=hairdresser.id)

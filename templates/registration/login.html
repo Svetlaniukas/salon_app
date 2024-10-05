@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <h2 class="card-title text-center">Login</h2>
 
-                    <!-- Проверка ошибок формы -->
+                    <!-- Check for form errors -->
                     {% if form.errors %}
                         <div class="alert alert-danger">
                             <strong>There was an error with your submission:</strong>
@@ -18,6 +18,7 @@
                         </div>
                     {% endif %}
 
+                    <!-- Login form -->
                     <form method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
                         {{ form.as_p }}
@@ -26,12 +27,12 @@
                         </div>
                     </form>
 
-                    <!-- Ссылка для восстановления пароля -->
+                    <!-- Link for password reset -->
                     <div class="text-center mt-3">
                         <a href="{% url 'password_reset' %}">Forgot your password?</a>
                     </div>
 
-                    <!-- Дополнительные ссылки -->
+                    <!-- Additional links -->
                     <div class="text-center mt-3">
                         <a href="{% url 'register' %}" class="btn btn-link">Register</a>
                     </div>

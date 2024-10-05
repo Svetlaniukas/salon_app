@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<!-- Форма для фильтрации по рейтингу -->
+<!-- Form for filtering hairdressers by rating -->
 <div class="filter-rating-form mt-4">
     <form method="get" action="" class="form-inline justify-content-center">
         <label for="rating" class="mr-2">Filter by Rating:</label>
@@ -43,7 +43,7 @@
     </form>
 </div>
 
-<!-- Отображение парикмахеров -->
+<!-- Display the list of hairdressers -->
 <div class="hairdressers-list mt-4">
     <h2>Our Hairdressers</h2>
     <div class="row">
@@ -56,7 +56,7 @@
                     <p class="card-text">{{ hairdresser.specialization }}</p>
                     <p class="card-text">Experience: {{ hairdresser.experience }} years</p>
 
-                    <!-- Display rating -->
+                    <!-- Display rating with stars -->
                     <p class="card-text">Rating: 
                         {% for _ in hairdresser.filled_stars|make_list %}
                             <span class="text-warning">★</span>
@@ -69,7 +69,7 @@
 
                     <a href="{% url 'hairdresser_reviews' hairdresser.id %}" class="btn btn-primary">See Reviews</a>
 
-                    <!-- Отзывы -->
+                    <!-- Display reviews for each hairdresser -->
                     <div class="reviews mt-3">
                         <h5>Reviews:</h5>
                         {% if hairdresser.reviews.all %}
@@ -89,7 +89,7 @@
     </div>
 </div>
 
-<!-- Цитата дня -->
+<!-- Quote of the Day section -->
 <div class="quote-section mt-4">
     <h2>Quote of the Day</h2>
     {% if quote %}

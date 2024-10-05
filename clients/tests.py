@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class UserRegistrationTest(TestCase):
     def test_register_user(self):
-        # Отправляем POST запрос на страницу регистрации клиента
+        # Send a POST request to the client registration page
         response = self.client.post(reverse('register_client'), {
             'username': 'testuser',
             'password1': 'ComplexPassword123!',
@@ -12,8 +12,8 @@ class UserRegistrationTest(TestCase):
             'email': 'testuser@example.com'
         })
 
-        # Проверяем, что пользователь был создан
+        # Check if the user was created
         self.assertEqual(User.objects.count(), 1)
         
-        # Проверяем редирект на панель управления клиента
+        # Check if the user is redirected to the client dashboard
         self.assertRedirects(response, reverse('client_dashboard'))

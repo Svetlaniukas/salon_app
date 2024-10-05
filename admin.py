@@ -1,24 +1,22 @@
-# hairdresser_project/admin.py
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from clients.models import Client
 from hairdressers.models import Hairdresser
 
-# Создаем инлайн для отображения профиля клиента
+# Create an inline to display the client profile
 class ClientInline(admin.StackedInline):
     model = Client
     can_delete = False
     verbose_name_plural = 'Clients'
 
-# Создаем инлайн для отображения профиля парикмахера
+# Create an inline to display the hairdresser profile
 class HairdresserInline(admin.StackedInline):
     model = Hairdresser
     can_delete = False
     verbose_name_plural = 'Hairdressers'
 
-# Переопределяем админку для User, добавляем инлайн профили клиента и парикмахера
+# Override the admin for User, adding inline profiles for client and hairdresser
 # hairdresser_project/admin.py
 
 class UserAdmin(BaseUserAdmin):
@@ -34,6 +32,6 @@ class UserAdmin(BaseUserAdmin):
     is_hairdresser.short_description = 'Is Hairdresser'
     is_hairdresser.boolean = True
 
-# Снова перерегистрируем UserAdmin с новыми полями
+# Re-register the UserAdmin with the new fields
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

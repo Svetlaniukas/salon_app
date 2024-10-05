@@ -12,13 +12,13 @@ class Hairdresser(models.Model):
     experience = models.PositiveIntegerField(default=0)
     availability = models.CharField(max_length=100, default='9 AM - 6 PM')
 
-    # Метод для вычисления среднего рейтинга парикмахера
+    # Method to calculate the average rating of the hairdresser
     def get_average_rating(self):
-        reviews = self.reviews.all()  # Получаем все отзывы для этого парикмахера
+        reviews = self.reviews.all()  # Get all reviews for this hairdresser
         if reviews.exists():
             average = reviews.aggregate(models.Avg('rating'))['rating__avg']
-            return round(average, 2)  # Округляем до двух знаков
-        return 0  # Если отзывов нет, возвращаем 0
+            return round(average, 2)  # Round to two decimal places
+        return 0  # If there are no reviews, return 0
 
     def __str__(self):
-        return self.name
+        return self.name  # String representation of the Hairdresser model

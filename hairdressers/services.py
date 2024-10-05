@@ -1,17 +1,16 @@
-# hairdressers/services.py
 import requests
 import logging
 import urllib3
 
 logger = logging.getLogger(__name__)
 
-# Отключаем предупреждения о SSL-сертификатах
+# Disable SSL certificate warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def get_random_quote():
     url = "https://api.quotable.io/random"
     try:
-        # Запрос к API с отключенной проверкой SSL
+        # API request with SSL verification disabled
         response = requests.get(url, verify=False)
         if response.status_code == 200:
             data = response.json()

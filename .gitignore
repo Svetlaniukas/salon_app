@@ -1,27 +1,28 @@
-# Исключаем виртуальное окружение
+# Exclude virtual environment
 venv/
 env/
+.env
 
-# Исключаем кеши Python
+# Exclude Python caches
 *.pyc
 __pycache__/
 
-# Исключаем базу данных SQLite (если используешь SQLite)
+# Exclude SQLite database (if using SQLite)
 *.sqlite3
 
-# Исключаем медиафайлы (если загружаешь их локально)
+# Exclude media files (if uploading locally)
 media/
 
-# Исключаем статические файлы, если они собраны
+# Exclude collected static files
 staticfiles/
 
-# Исключаем настройки среды разработки
+# Exclude development environment settings
 .idea/
 .vscode/
 
-# Лог-файлы
+# Log files
 *.log
 
-# Исключаем файлы конфигурации операционной системы
+# Exclude operating system configuration files
 .DS_Store
 Thumbs.db

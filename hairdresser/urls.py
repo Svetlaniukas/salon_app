@@ -16,16 +16,16 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', hairdresser_views.home, name='home'),
     path('login-redirect/', client_views.custom_login_redirect, name='custom_login_redirect'),
-    path('reviews/', include('reviews.urls')),  # Подключаем приложение отзывов
+    path('reviews/', include('reviews.urls')),  # Connecting the reviews app
     
 
-    # Восстановление пароля
+    # Password reset
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('accounts/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # Профили
+    # Profiles
     path('client/profile/', client_views.client_profile, name='client_profile'),
     path('hairdresser/profile/', hairdresser_views.hairdresser_profile, name='hairdresser_profile'),
 ]
