@@ -3,17 +3,19 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
-# Загрузка переменных окружения из .env файла
+# Загрузка переменных окружения из файла .env
 load_dotenv()
 
 # Настройки проекта
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Безопасность
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')  # Загрузка секретного ключа из .env
 
+# Режим отладки (Debug)
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
+# Разрешенные хосты
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # Приложения
@@ -43,8 +45,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URL для проекта
 ROOT_URLCONF = 'hairdresser.urls'
 
+# Настройки шаблонов
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -61,6 +65,7 @@ TEMPLATES = [
     },
 ]
 
+# WSGI приложение
 WSGI_APPLICATION = 'hairdresser.wsgi.application'
 
 # Настройки базы данных PostgreSQL через переменную окружения
@@ -70,13 +75,13 @@ DATABASES = {
 
 # Статические файлы (CSS, JavaScript)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Папка для собранных статических файлов
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Папка для пользовательских статических файлов
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Директория для статики
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Локальные файлы статики
 
 # WhiteNoise для обслуживания статики
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Медиа файлы (загружаемые пользователями файлы, например, аватары)
+# Медиа файлы (файлы, загружаемые пользователями)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь для медиафайлов
 
@@ -90,7 +95,7 @@ USE_TZ = True
 # Конфигурация для автоматической установки первичных ключей в моделях
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Настройки для приложения в продакшене
+# Настройки для работы в продакшене
 if not DEBUG:
     SECURE_SSL_REDIRECT = True  # Перенаправление на HTTPS
     SESSION_COOKIE_SECURE = True
@@ -98,3 +103,6 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+# Дополнительно
+# Убедитесь, что .env файл содержит переменные SECRET_KEY, DEBUG, DATABASE_URL, ALLOWED_HOSTS и другие важные настройки.
