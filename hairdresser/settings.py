@@ -53,7 +53,7 @@ ROOT_URLCONF = 'hairdresser.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Указываем путь для шаблонов
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,7 +76,7 @@ DATABASES = {
 
 # Статические файлы (CSS, JavaScript)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Директория для статики
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Директория для статики, собранной в продакшене
 
 # WhiteNoise для обслуживания статики в продакшене
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -89,7 +89,7 @@ else:
 
 # Медиа файлы (файлы, загружаемые пользователями)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь для медиафайлов
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Директория для медиафайлов
 
 # Локализация
 LANGUAGE_CODE = 'en-us'
@@ -117,5 +117,22 @@ else:
         SECURE_HSTS_INCLUDE_SUBDOMAINS = True
         SECURE_HSTS_PRELOAD = True
 
-# Дополнительно
-# Убедитесь, что .env файл содержит переменные SECRET_KEY, DEBUG, DATABASE_URL, ALLOWED_HOSTS и другие важные настройки.
+# Логи (если необходимо)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+        },
+    },
+}
+
+# Дополнительно .env файл должен содержать переменные SECRET_KEY, DEBUG, DATABASE_URL, ALLOWED_HOSTS и другие важные настройки.
