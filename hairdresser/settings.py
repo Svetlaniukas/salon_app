@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
 import dj_database_url
-from dotenv import load_dotenv  # Импортируем функцию для загрузки .env
+from dotenv import load_dotenv
 
-# Загружаем переменные из .env
+# Загрузка переменных окружения из .env файла
 load_dotenv()
 
 # Настройки проекта
@@ -18,14 +18,13 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # Приложения
 INSTALLED_APPS = [
-    # Системные приложения Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Твои приложения
+    # Ваши приложения
     'clients',
     'hairdressers',
     'appointments',
@@ -34,7 +33,7 @@ INSTALLED_APPS = [
 
 # Middleware
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise для статики
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise для обслуживания статики
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,24 +63,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hairdresser.wsgi.application'
 
-# Настройки базы данных PostgreSQL
+# Настройки базы данных PostgreSQL через переменную окружения
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL')  # Получаем DATABASE_URL из .env
-    )
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 # Статические файлы (CSS, JavaScript)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Папка для собранных статических файлов
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Папка для пользовательских статических файлов
 
 # WhiteNoise для обслуживания статики
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Медиа файлы (например, аватары)
+# Медиа файлы (загружаемые пользователями файлы, например, аватары)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Путь для медиафайлов
 
 # Локализация
 LANGUAGE_CODE = 'en-us'
@@ -90,12 +87,12 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Автоматическое поле первичного ключа
+# Конфигурация для автоматической установки первичных ключей в моделях
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Настройки безопасности для продакшена
+# Настройки для приложения в продакшене
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = True  # Перенаправление на HTTPS
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000
