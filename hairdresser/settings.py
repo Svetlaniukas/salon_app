@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import sys
 
 # Загрузка переменных окружения из файла .env
 load_dotenv()
@@ -78,7 +79,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Директория для статики
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Локальные файлы статики
 
-# WhiteNoise для обслуживания статики
+# WhiteNoise для обслуживания статики в продакшене
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Медиа файлы (файлы, загружаемые пользователями)
@@ -95,14 +96,21 @@ USE_TZ = True
 # Конфигурация для автоматической установки первичных ключей в моделях
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Настройки для работы в продакшене
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True  # Перенаправление на HTTPS
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+# Отключение перенаправления на HTTPS и других безопасных настроек во время тестов
+if 'test' in sys.argv:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_HSTS_SECONDS = 0
+else:
+    # Настройки для работы в продакшене
+    if not DEBUG:
+        SECURE_SSL_REDIRECT = True  # Перенаправление на HTTPS
+        SESSION_COOKIE_SECURE = True
+        CSRF_COOKIE_SECURE = True
+        SECURE_HSTS_SECONDS = 31536000
+        SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+        SECURE_HSTS_PRELOAD = True
 
 # Дополнительно
 # Убедитесь, что .env файл содержит переменные SECRET_KEY, DEBUG, DATABASE_URL, ALLOWED_HOSTS и другие важные настройки.
