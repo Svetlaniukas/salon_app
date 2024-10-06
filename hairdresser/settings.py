@@ -77,10 +77,15 @@ DATABASES = {
 # Статические файлы (CSS, JavaScript)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Директория для статики
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Локальные файлы статики
 
 # WhiteNoise для обслуживания статики в продакшене
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Настройка директории для статических файлов в режиме разработки
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Только для разработки
+else:
+    STATICFILES_DIRS = []  # В продакшене не требуется
 
 # Медиа файлы (файлы, загружаемые пользователями)
 MEDIA_URL = '/media/'
