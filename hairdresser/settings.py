@@ -1,9 +1,6 @@
-# Django settings for the hairdresser project.
-
 from pathlib import Path
 from decouple import config
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -16,15 +13,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']  # Директория для дополнительных статических файлов
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Директория для собранных статических файлов
 
-# WhiteNoise settings for serving static files in production
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Security settings
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
-
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost',
-                       cast=lambda v: [s.strip() for s in v.split(',')])
+SECRET_KEY = config('SECRET_KEY', default='your-secret-key')
+DEBUG = True  # Включаем режим разработки
+ALLOWED_HOSTS = []  # Для локальной разработки можно оставить пустым или добавить 'localhost'
 
 # Redirect after successful login
 LOGIN_REDIRECT_URL = 'custom_login_redirect'
@@ -32,8 +24,8 @@ LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
 # Cookie security settings
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+CSRF_COOKIE_SECURE = False  # Отключаем для локальной разработки
+SESSION_COOKIE_SECURE = False  # Отключаем для локальной разработки
 
 # Application definition
 INSTALLED_APPS = [
@@ -50,7 +42,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -81,11 +72,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "hairdresser.wsgi.application"
 
-# Database configuration
+# Database configuration for local development
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Для локальной разработки можно использовать SQLite
+    }
 }
 
 # Password validation
@@ -108,10 +100,6 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-
-# Static files
-# Дублирующие настройки убраны
-# STATIC_URL и STATIC_ROOT уже были определены выше, так что их не нужно дублировать.
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

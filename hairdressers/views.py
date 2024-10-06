@@ -14,32 +14,31 @@ from django.db.models import Avg
 def home(request):
     context = {}
 
-    # Check if the user is a client or hairdresser
+    # Проверяем, аутентифицирован ли пользователь
     if request.user.is_authenticated:
         context['is_client'] = hasattr(request.user, 'client_profile')
         context['is_hairdresser'] = hasattr(request.user, 'hairdresser_profile')
 
-    # Get all hairdressers
+    # Получаем всех парикмахеров
     hairdressers = Hairdresser.objects.all()
 
-    # Filtering by rating
+    # Фильтрация по рейтингу
     if request.method == 'GET':
         form = RatingFilterForm(request.GET)
         if form.is_valid():
             min_rating = form.cleaned_data.get('min_rating')
             if min_rating:
                 hairdressers = hairdressers.filter(reviews__rating__gte=min_rating).distinct()
-
     else:
         form = RatingFilterForm()
 
-    # Pass the form and hairdressers to the context
+    # Добавляем форму и список парикмахеров в контекст
     context['form'] = form
     context['hairdressers'] = hairdressers
 
-    # Get a random quote via API
+    # Получаем случайную цитату через новый API ZenQuotes
     quote_data = get_random_quote()
-    context['quote'] = quote_data
+    context['quote'] = quote_data  # Передаем цитату в контекст
 
     return render(request, 'home.html', context)
 
